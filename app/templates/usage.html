@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %} MoveMyMusic {% endblock %}
+{% block app_content %}
+<!-- <script type="text/javascript" src="{{ url_for('static', filename= 'js/usage.js')}}"></script> -->
+<h1 class="cover-heading">Configuration</h1>
+<main role="main" class="container usage-menu">
+    <form id="form" method='POST' action="/usage">
+    <div class="form-inline">
+        <div class="col justify-content-center">
+            <label class="my-1 mr-2 text-muted text-center">Export From</label>
+            <select class="custom-select my-1 mr-sm-2" id="input-source" name="myselect">
+                <option selected value="0">Choose...</option>
+                <option value="VK">VK</option>
+                <option value="YM">Yandex.Music</option>
+                <option value="SP">Spotify</option>
+            </select>
+        </div>
+        <div class="col justify-content-center">
+            <select class="custom-select my-1 mr-sm-2" id="input-target" name="myselect">
+                <option selected value="0">Choose...</option>
+                <option value="YM">Yandex.Music</option>
+                <option value="SP">Spotify</option>
+            </select>
+            <label class="my-1 mr-2 text-muted text-center justify-content-center">Import To</label>
+        </div>
+    </div>
+    <div class="dropdown-divider" style="margin-top: 3rem;"></div>
+
+        <div class="form-group">
+            <p class="text-left" id="source-text">credentials for ...</p>
+            <input name="sourceLogin" type="login" id="sourceLogin" class="form-control" placeholder="Login" autofocus>
+            <input name="sourcePassword" type="password" id="sourcePassword" class="form-control" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <p class="text-left" id="target-text">credentials for ...</p>
+            <input name="targetLogin" type="login" id="targetLogin" class="form-control" placeholder="Login" autofocus>
+            <input name="targetPassword" type="password" id="targetPassword" class="form-control" placeholder="Password">
+        </div>
+        <p class="text=left" id='note1' style="display: none;">(<strong>!Note</strong>: Spotify requires extra steps)</p>
+    <div class="dropdown-divider" style="margin-top: 3rem;"></div>
+    <div class="row md-4 justify-content-center" style="margin-top: 1rem;">
+        <p class="text-muted text-center">Import What:</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="mycheckbox" value="--alltracks" id="alltracks_chk">
+                <label class="form-check-label" for="alltracks_chk">
+                    all tracks
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="mycheckbox" id="playlists_chk"  value="--playlists">
+                <label class="form-check-label" for="playlists_chk">
+                    playlists
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="mycheckbox" id="albums_chk"  value="--albums">
+                <label class="form-check-label" for="albums_chk">
+                    albums
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="mycheckbox" id="artists_chk"  value="--artists">
+                <label class="form-check-label" for="artists_chk">
+                    artists
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="submit" id="check-button" class="btn btn-md btn-secondary" style="margin-top: 2rem;">Check</button>
+    </div>
+    </form>
+</main>
+{% endblock %}
+{% block extend_js %}
+<script type="text/javascript" src="{{ url_for('static', filename= 'js/usage.js')}}"></script>
+{% endblock %}
+

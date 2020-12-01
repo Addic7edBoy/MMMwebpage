@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% macro dashboard_option(title, endpoint, description=None) %}
+<a class="column" href="{{ url_for(endpoint) }}">
+    <div class="ui padded segment">
+            <div class="content">
+                <h4>{{ title }}</h4>
+                {% if description is not none %}
+                <p class="text-muted">
+                   ({{ description }})
+                </p>
+                {% endif %}
+            </div>
+    </div>
+</a>
+{% endmacro %}
+
+{% block app_content %}
+<main role="main" class="conteiner">
+        <h2>
+            Admin Dashboard
+        </h2>
+        <div class="dropdown-divider" style="margin-top: 3rem;"></div>
+        <div class="form-inline">
+            <div class="col-md-6">
+            {{ dashboard_option('Registered Users', 'admin.registered_users',
+                                    description='View and manage user accounts') }}
+            </div>
+            <div class="col-md-6">
+            {{ dashboard_option('Add New User', 'admin.new_user',
+                                    description='Create a new user account') }}
+            </div>
+        </div>
+</main>
+{% endblock %}

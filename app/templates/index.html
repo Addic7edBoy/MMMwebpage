@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% from "macros.html" import render_field %}
+
+{% block app_content %}
+    <main role="main" class="inner cover">
+    <h1 class="cover-heading">Your music where you like it.</h1>
+    <p class="lead"><SPAN STYLE="border-bottom: .25rem solid; padding: .05rem 0">Import/Export</SPAN> your tracks, playlists and albums.
+        MoveMyMusic is a project that lets you migrate from one music service to another in one click.
+         <SPAN STYLE="border-bottom: .25rem solid; padding: .05rem 0">From/To</SPAN> anywhere.</p>
+    <p class="lead">
+        {% if current_user.is_anonymous %}
+        <a href="#" class="btn btn-lg btn-secondary login-btn">Migrate</a>
+        {% else %}
+        <a href="{{ url_for('usage')}}" class="btn btn-lg btn-secondary">Migrate</a>
+        {% endif %}
+    </p>
+</main>
+{% endblock %}
+{% block popModal %}
+<div id="myModal" class="modal mfp-with-anim mfp-hide">
+    <div class="modal-content" id='modalContent'>
+        <form class="form-signin" method="post" action="/index">
+            <H1>Please Log In</H1>
+            {{ form.hidden_tag() }}
+            <!-- <input name="username" type="username" id="inpuUsername" class="form-control" placeholder="Username" -->
+                <!-- autofocus> -->
+            <!-- <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"> -->
+            {{ render_field(form.username, class='form-control', placeholder='Username') }}
+            {{ render_field(form.password, class='form-control', placeholder='Password') }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <p>need account? <a href="https://t.me/Addic7edBoy">Telegram</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extend_js %} <script type="text/javascript" src="{{ url_for('static', filename= 'js/index.js')}}"></script> {% endblock %}

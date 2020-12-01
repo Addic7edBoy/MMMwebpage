@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% from "macros.html" import render_field %}
+
+{% block title %} Features {% endblock %}
+
+{% block app_content %}
+<h3 style="margin-bottom: 1rem;">List of supported music <SPAN STYLE="text-decoration:overline">services</SPAN> and available <SPAN STYLE="text-decoration:underline">features</SPAN> for each of them</h3>
+<div class="row sm-4 justify-content-end">
+    <!-- <div class="col-3 themed-grid-col"></div> -->
+    <div class="col-3 main-grid-col"><strong>VK</strong></div>
+    <div class="col-3 main-grid-col"><strong>Yandex.Music</strong></div>
+    <div class="col-3 main-grid-col"><strong>Spotify</strong></div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">tracks export</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">+</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">playlist export</div>
+    <div class="col-3 themed-grid-col">+</div>
+    <div class="col-3 themed-grid-col">+</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">albums export</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">+</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">artists export</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">+</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">tracks import</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">+</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">playlist import</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">+</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">albums import</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+<div class="row sm-4">
+    <div class="col-3 main-grid-col">artists import</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">-</div>
+    <div class="col-3 themed-grid-col">+</div>
+</div>
+{% endblock %}
+{% block popModal %}
+<div id="myModal" class="modal mfp-with-anim mfp-hide">
+    <div class="modal-content" id='modalContent'>
+        <form class="form-signin" method="post" action="/index">
+            <H1>Please Log In</H1>
+            {{ form.hidden_tag() }}
+            <!-- <input name="username" type="username" id="inpuUsername" class="form-control" placeholder="Username" -->
+            <!-- autofocus> -->
+            <!-- <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"> -->
+            {{ render_field(form.username, class='form-control', placeholder='Username') }}
+            {{ render_field(form.password, class='form-control', placeholder='Password') }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <p>need account? <a href="https://t.me/Addic7edBoy">Telegram</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extend_js %}
+<script type="text/javascript" src="{{ url_for('static', filename= 'js/index.js')}}"></script>
+{% endblock %}

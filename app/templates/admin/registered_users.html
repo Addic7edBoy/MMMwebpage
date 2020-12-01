@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<main role="main">
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Account type</th>
+                <th>Last seen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">
+            <!-- <tr> -->
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.role }}</td>
+                <td>{{ u.last_seen }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+{% endblock %}

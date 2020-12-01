@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% import 'form_macros.html' as f %}
+
+
+{% set endpoints = [
+    ('admin.user_info', 'User info'),
+    ('admin.change_account_type', 'Change role'),
+    ('admin.change_username', 'Change username'),
+    ('admin.change_password', 'Change password'),
+    ('admin.delete_user', 'Delete user')
+] %}
+<!--
+{% macro navigation(items) %}
+<div class="ui vertical fluid secondary menu">
+    {% for route, name in items %}
+    {% set href = url_for(route, user_id=user.id) %}
+    <a class="item {% if request.endpoint == route %}active{% endif %}" href="{{ href }}">
+        {{ name }}
+    </a>
+    {% endfor %}
+</div>
+{% endmacro %} -->
+
+{% macro navigation(items) %}
+<div class="list-group" role="tablist">
+    {% for route, name in items %}
+    {% set href = url_for(route, user_id=user.id) %}
+    <a class="list-group-item list-group-item-action" href="{{ href }}">
+        {{name}}
+    </a>
+    {% endfor %}
+    <a class="list-group-item list-group-item-action" href="{{ url_for('admin.registered_users') }}">Back to users</a>
+</div>
+{% endmacro %}
+
+{% macro user_info(user) %}
+<div class="row">
+    <div class="col main-grid-col">User ID:</div>
+    <div class="col themed-grid-col">{{ user.id }}</div>
+</div>
+<div class="row">
+    <div class="col main-grid-col">Username:</div>
+    <div class="col themed-grid-col">{{ user.username }}</div>
+</div>
+<div class="row">
+    <div class="col main-grid-col">Name:</div>
+    <div class="col themed-grid-col">{{ user.name }}</div>
+</div>
+<div class="row">
+    <div class="col main-grid-col">User type:</div>
+    <div class="col themed-grid-col">{{ user.role }}</div>
+</div>
+<div class="row">
+    <div class="col main-grid-col">Last seen:</div>
+    <div class="col themed-grid-col">{{ user.last_seen }}</div>
+</div>
+{% endmacro %}
+
+
+{% block app_content %}
+<h2 class="cover-heading">View and manage {{ user.username }}’s account.</h2>
+<main role="main" class="usage-menu">
+    <!-- <div class="row px-3 justify-content-start">
+    <a class="btn btn-secondary btn-sm" href="{{ url_for('admin.registered_users') }}">Back to all users</a>
+    </div> -->
+    <div class="row">
+        <div class="col-4">
+            {{ navigation(endpoints) }}
+        </div>
+        <div class="col-8">
+            {% if form %}
+            {{ f.render_form(form) }}
+            {% else %}
+            {{ user_info(user) }}
+            {% endif %}
+        </div>
+    </div>
+    <!-- <div class="ui stackable centered grid container">
+        <div class="stretched divided very relaxed row">
+            <div class="four wide column">
+                {{ navigation(endpoints) }}
+            </div>
+            <div class="eight wide column">
+                {% if form %}
+                {{ f.render_form(form) }}
+                {% else %}
+                {{ user_info(user) }}
+                {% endif %}
+            </div>
+        </div>
+    </div> -->
+</main>
+{% endblock %}
