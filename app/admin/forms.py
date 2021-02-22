@@ -25,7 +25,7 @@ class NewUserForm(FlaskForm):
     username = StringField(
         'Username', validators=[InputRequired(),
                                   Length(1, 64)])
-    username = StringField(
+    name = StringField(
         'Name', validators =[ Length(1, 64)])
     password = PasswordField(
         'Password',

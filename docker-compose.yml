@@ -4,6 +4,8 @@ services:
   mmm:
     build:
       context: .
+    volumes:
+        - ./:/home/MMMwebpage
     links:
       - mysqldb
     depends_on:
@@ -16,9 +18,14 @@ services:
   mysqldb:
     image: mysql/mysql-server:5.7
     ports:
-      - "3306:3306"
+      - "32000:3306"
     environment:
       MYSQL_USER: max
       MYSQL_PASSWORD: 8883868
       MYSQL_DATABASE: MMM
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
 

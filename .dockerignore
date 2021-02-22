@@ -13,6 +13,6 @@ env
 .app.yaml
 .python-version
 dataTemplate.json
-.env
+# .env
 .flaskenv
 logs

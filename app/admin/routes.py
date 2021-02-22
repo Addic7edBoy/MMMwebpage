@@ -61,7 +61,7 @@ def new_user():
             username=form.username.data,
             name=form.name.data,
             role=form.role.data)
-        user.set_password(user.password)
+        user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('User %s successfully created' % user.username, 'form-success')
