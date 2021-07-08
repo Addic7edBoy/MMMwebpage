@@ -39,7 +39,7 @@ body {
 }
 
 .cover-container {
-  max-width: 42em;
+  max-width: 48em;
 }
 
 
@@ -213,7 +213,7 @@ body {
 .usage-menu {
   background-color: rgba(26, 8, 27, 0.4);
   border-radius: 3rem;
-  padding: 3rem 3rem;
+  padding: 3rem 1rem;
 }
 
 .grid-divider {
@@ -242,3 +242,65 @@ body {
 }
 
 
+
+.checkbox-menu li label {
+    display: block;
+    padding: 3px 10px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    margin:0;
+    transition: background-color .4s ease;
+}
+.checkbox-menu li input {
+    margin: 0px 5px;
+    top: 2px;
+    position: relative;
+}
+
+.checkbox-menu li.active label {
+    background-color: #cbcbff;
+    font-weight:bold;
+}
+
+.checkbox-menu li label:hover,
+.checkbox-menu li label:focus {
+    background-color: #f5f5f5;
+}
+
+.checkbox-menu li.active label:hover,
+.checkbox-menu li.active label:focus {
+    background-color: #b8b8ff;
+}
+
+
+
+/* BOOTSTRAP TWEAKS */
+.usage-menu .list-group-item {
+  background-color: rgba(91, 70, 123, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.status-menu {
+  color: white;
+}
+
+.status-menu .list-group {
+  border-radius: 0rem 0rem .4rem .4rem;
+  border-style: solid;
+  border-width: 0px 1px 1px 1px;
+  border-color: rgba(233, 233, 233, 0.815);
+  text-align: start;
+}
+
+.status-menu .list-group-item {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(184, 159, 159, 0.733)
+}
+
+.status-menu .logs {
+  background-color: rgba(0, 0, 0, .3);
+  text-align: start;
+}

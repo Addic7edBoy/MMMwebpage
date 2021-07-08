@@ -9,9 +9,9 @@
          <SPAN STYLE="border-bottom: .25rem solid; padding: .05rem 0">From/To</SPAN> anywhere.</p>
     <p class="lead">
         {% if current_user.is_anonymous %}
-        <a href="#" class="btn btn-lg btn-secondary login-btn">Migrate</a>
+        <a href="#" class="btn btn-lg btn-secondary login-btn">Try it</a>
         {% else %}
-        <a href="{{ url_for('usage')}}" class="btn btn-lg btn-secondary">Migrate</a>
+        <a href="{{ url_for('usage')}}" class="btn btn-lg btn-secondary">Try it</a>
         {% endif %}
     </p>
 </main>

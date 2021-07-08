@@ -1,78 +1,254 @@
 
 
 window.onload = function () {
-    let input_source = document.getElementById("input-source");
-    let input_target = document.getElementById("input-target");
-    let alltracks_chk = document.getElementById("alltracks_chk");
-    let playlists_chk = document.getElementById("playlists_chk");
-    let albums_chk = document.getElementById("albums_chk");
-    let artists_chk = document.getElementById("artists_chk");
+    let sourceVal = String;
+    let targetVal = String;
 
-    console.log(input_source);
 
-    $('#input-source').on('click', function () {
-        // alert($(this).val());
+    $('.form-check-input').on('click', function () {
         console.log($(this).val());
-        selected_src = $(this).val();
-        switch(selected_src){
-            case 'VK':
-                alltracks_chk.disabled = true;
-                artists_chk.disabled = true;
-                albums_chk.disabled = true;
-                $('#note1').hide();
-                $('#sourcePassword').show();
+        if ($(this).attr('id').indexOf('src') == 0) {
+            console.log('source radio')
+            sourceVal = $(this).val()
+            switch (sourceVal) {
+                case 'vk':
+                    $('#sourceLogin').removeAttr('disabled')
+                    $('#sourceHelp').text('2 factor auth must be off')
+                    $('#sourcePassword').removeAttr('disabled')
+                    $('#check-source').removeAttr('disabled')
+                    break;
+
+                case 'sp':
+                    $('#sourceLogin').removeAttr('disabled')
+                    $('#sourceHelp').text('sp needs to verify permissions, press "check"')
+                    $('#check-source').removeAttr('disabled')
+                    $('#sourcePassword').attr('disabled', 'disabled')
+                    break;
+
+                case 'ym':
+                    $('#sourceLogin').removeAttr('disabled')
+                    $('#sourceHelp').text('')
+                    $('#sourcePassword').removeAttr('disabled')
+                    $('#check-source').removeAttr('disabled')
+                    break;
+            }
+        } else {
+            console.log('target radio')
+            targetVal = $(this).val()
+            switch (targetVal) {
+                case 'sp':
+                    $('#trgtLogin').removeAttr('disabled')
+                    $('#trgtHelp').text('sp needs to verify permissions, press "check"')
+                    $('#check-trgt').removeAttr('disabled')
+                    $('#trgtPassword').attr('disabled', 'disabled')
+                    break;
+
+                case 'ym':
+                    $('#trgtLogin').removeAttr('disabled')
+                    $('#trgtHelp').text('')
+                    $('#trgtPassword').removeAttr('disabled')
+                    $('#check-trgt').removeAttr('disabled')
+                    break;
+            }
+        }
+    })
+
+    $('#confirm').on('click', function () {
+        $(this).attr('disabled', 'disabled')
+        $('.usage-menu').attr('style', 'border-bottom-left-radius: 0rem;')
+        $('#progress').collapse('show');
+        var playlist_ids = getCheckedPlaylists();
+        $.post('/run', {
+            s: sourceVal,
+            t: targetVal,
+            s_login: $('#sourceLogin').val().toLowerCase(),
+            s_pass: $('#sourcePassword').val().toLowerCase(),
+            t_login: $('#trgtLogin').val().toLowerCase(),
+            t_pass: $('#trgtPassword').val().toLowerCase(),
+            all: $('#checkAll').prop('checked'),
+            artists: $('#checkArtists').prop('checked'),
+            albums: $('#checkAlbums').prop('checked'),
+            playlists: playlist_ids
+        })
+    })
+
+
+    $('#check-source').on('click', function () {
+        console.log(sourceVal);
+        $('#spinner').show();
+        $('#btn-text').html('Loading...')
+        switch (sourceVal) {
+            case 'vk':
+                $.post('/vk-login', {
+                    login: $('#sourceLogin').val().toLowerCase(),
+                    pass: $('#sourcePassword').val().toLowerCase(),
+                    get_playlists: true
+                }).done(function (response) {
+                    if (response['success'] == 1) {
+                        console.log('vk login successful')
+                        console.log(response)
+                        $('#spinner').hide();
+                        $('#btn-text').html('Success')
+                        $('#check-source').addClass('btn-success')
+                        renderPlaylistDropdown(response['playlist_list'])
+                        trgtStep(sourceVal);
+                    } else { console.log('ERROR') }
+                }).fail(function () {
+                    console.log('REQUEST FAILED')
+                    $('#spinner').hide();
+                    $('#btn-text').html('Retry')
+                    $('#check-source').addClass('btn-danger')
+                })
                 break;
-            case 'SP':
-                // document.getElementById('source-text').innerHTML = 'In order to use Spotify, you need to grand permissions to this app';
-                $('#note1').show();
-                $('#sourcePassword').hide();
+
+            case 'ym':
+                $.post('/ym-login', {
+                    login: $('#sourceLogin').val().toLowerCase(),
+                    pass: $('#sourcePassword').val().toLowerCase(),
+                    get_playlists: true
+                }).done(function (response) {
+                    if (response['success'] == 1) {
+                        console.log('ym login successful');
+                        console.log(response);
+                        $('#spinner').hide();
+                        $('#btn-text').html('Success')
+                        $('#check-source').addClass('btn-success')
+                        renderPlaylistDropdown(response['playlist_list'])
+                        trgtStep(sourceVal);
+                    } else { console.log('ERROR') }
+                }).fail(function () {
+                    console.log('REQUEST FAILED')
+                    $('#spinner').hide();
+                    $('#btn-text').html('Retry')
+                    $('#check-source').addClass('btn-danger')
+                })
+                break;
+
+            case 'sp':
+                $.post('/sp-token', {
+                    login: $('#sourceLogin').val().toLowerCase(),
+                    get_playlists: true
+                }).done(function (response) {
+                    if (response['token'] == 1) {
+                        console.log('yes token')
+                        $('#check-source span').hide();
+                        $('#btn-text').html('Success')
+                        $('#check-source').addClass('btn-success')
+                        renderPlaylistDropdown(response['playlist_list'])
+                        trgtStep(sourceVal)
+                    }
+                    else {
+                        console.log('no token')
+                        $('#sp-login-btn').attr('href', response['auth_url'])
+                        $('#sp-login-btn').show()
+                    }
+                    console.log(response)
+                }).fail(function () {
+                    console.log('ERROR')
+                    $('#spinner').hide();
+                    $('#btn-text').html('Retry')
+                    $('#check-source').addClass('btn-danger')
+                })
                 break;
 
             default:
-                alltracks_chk.disabled = false;
-                artists_chk.disabled = false;
-                albums_chk.disabled = false;
-                $('#note1').hide();
-                $('#sourcePassword').show();
+                console.log('unexpected value "sourceVal"', sourceVal)
                 break;
-            }
-
-        document.getElementById('source-text').innerHTML = 'Credentials for ' + selected_src
-    });
-    $('#input-target').on('click', function () {
-        // alert($(this).val());
-        console.log($(this).val());
-        selected_trgt = $(this).val();
-        if (selected_trgt == 'SP'){
-            $('#note1').show();
-            $('#targetPassword').hide();
-        } else {
-            $('#targetPassword').show();
         }
-        document.getElementById('target-text').innerHTML = 'Credentials for ' + selected_trgt;
-    });
-
-
-    $('#submit-button').on('click', function () {
-        // $(".modal").fadeOut(500)
-        $('#confirm_info').hide();
-        $('#progressbar').show();
-        var conf = $('#conf').text()
-        $.post('/run', {
-            s: $('#s').text().toLowerCase(), t: $('#t').text().toLowerCase(), s_user: $('#s_l').text(),
-            s_pass: $('#s_p').text(), t: $('#t').text(), t_user: $('#t_l').text(), t_pass: $('#t_p').text(), conf: conf
-        }).done(function (response) {
-            $('#status-text').text(`Done. Run exit status: ${response}`);
-            $('#status-img').hide()
-            // $('#img').src = {{ url_for("static", filename="img / success.jpg")}}
-            // $('#status-img').html('<img src="{{ url_for("static", filename="img/success.jpg")}}" height="173" width="300" alt="success">')
-            $('#back-button').show()
-            console.log(response)
-        }).fail(function () {
-            console.log('ERROR')
-            $('#status-img').hide()
-            $('#status-text').text('ERROR')
-            $('#back-button').show()
-        })
     })
+
+
+
+    $('#check-trgt').on('click', function () {
+        $('#spinner2').show();
+        $('#btn2-text').html('Loading...')
+        switch (targetVal) {
+
+            case 'ym':
+                $.post('/ym-login', {
+                    login: $('#trgtLogin').val().toLowerCase(),
+                    pass: $('#trgtPassword').val().toLowerCase(),
+                }).done(function (response) {
+                    if (response['success'] == 1) {
+                        console.log('ym login successful');
+                        console.log(response);
+                        $('#spinner2').hide();
+                        $('#btn2-text').html('Success')
+                        $('#check-trgt').addClass('btn-success')
+                        contentStep(sourceVal);
+                    } else { console.log('ERROR') }
+                }).fail(function () {
+                    console.log('REQUEST FAILED')
+                    $('#spinner2').hide();
+                    $('#btn2-text').html('Retry')
+                    $('#check-trgt').addClass('btn-danger')
+                })
+                break;
+
+            case 'sp':
+                $.post('/sp-token', {
+                    login: $('#trgtLogin').val().toLowerCase(),
+                    get_playlists: false
+                }).done(function (response) {
+                    if (response['token'] == 1) {
+                        console.log('yes token')
+                        $('#spinner2').hide();
+                        $('#btn2-text').html('Success')
+                        $('#check-trgt').addClass('btn-success')
+                        contentStep(sourceVal);
+                    }
+                    else {
+                        console.log('no token')
+                        $('#sp-login-btn2').attr('href', response['auth_url'])
+                        $('#sp-login-btn2').show()
+                    }
+                }).fail(function () {
+                    console.log('ERROR')
+                    $('#spinner2').hide();
+                    $('#btn2-text').html('Retry')
+                    $('#check-trgt').addClass('btn-danger')
+                })
+                break;
+
+            default:
+                console.log('unexpected value "sourceVal"', targetVal)
+                break;
+        }
+    })
+}
+
+function renderPlaylistDropdown(playlist_list) {
+    for (const [key, value] of Object.entries(playlist_list)) {
+        console.log(key, value);
+        $("#playlist-dropdown").append("<li><label><input type='checkbox' id='" + value + "'>" + key + "</label></li>")
+    }
+}
+
+function trgtStep(sourceVal) {
+    $('#step2Heading').removeClass('text-muted')
+    if (sourceVal == 'sp') {
+        $('#trgtRadio2').removeAttr('disabled')
+        $('#trgtRadio3').attr('disabled', 'disabled')
+    } else if (sourceVal == 'ym') {
+        $('#trgtRadio3').removeAttr('disabled')
+        $('#trgtRadio2').attr('disabled', 'disabled')
+     } else { console.log('unexpected value "sourceval"', sourceVal) }
+}
+
+function contentStep(sourceVal){
+    if (sourceVal != 'vk')
+        $('#checkAll').removeAttr('disabled')
+        $('#checkAlbums').removeAttr('disabled')
+        $('#checkArtists').removeAttr('disabled')
+    $('#dropdownMenu1').removeAttr('disabled')
+    $('#confirm').removeAttr('disabled')
+    $('#step3Heading').removeClass('text-muted')
+}
+
+function getCheckedPlaylists() {
+    var selected = []
+    $('#playlist-dropdown input:checked').each(function(){
+        selected.push($(this).attr('id'))
+    })
+    return selected
 }

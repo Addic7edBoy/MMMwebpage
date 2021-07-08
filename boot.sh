@@ -1,6 +1,4 @@
 #!/bin/bash
-# flask db init
-# flask db upgrade
 while ! nc -z mysqldb 3306; do
   sleep 0.5
 done

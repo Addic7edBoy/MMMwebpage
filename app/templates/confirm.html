@@ -2,78 +2,23 @@
 {% block title %} MoveMyMusic {% endblock %}
 {% block app_content %}
 <!-- <script type="text/javascript" src="{{ url_for('static', filename= 'js/usage.js')}}"></script> -->
-<main role="main" class="usage-menu">
-    <div class="row justify-content-center main-header">
-        <h3 class="cover-heading">Almost there</h3>
-    </div>
-    <div class="container" id="confirm_info">
-        <!-- <div class="dropdown-divider" style="margin-top: 3rem;"></div> -->
-        <div class="row">
-            <div class="col-8 border-right border-left">
-                <p class="lead text-left new-p">You're going to import:</p>
-                <div class="col-7 dropdown-divider"></div>
-            </div>
-            <div class="col-4 justify-content-center">
-                <img src="{{ url_for('static', filename='img/' + session['source'].lower() + '.png')}}" class="d-flex align-self-start" width="90px" height="90px">
-            </div>
+<h1 class="cover-heading">Running...</h1>
+<main role="main" class="container usage-menu">
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item active" aria-current="true">An active item</li>
+                <li class="list-group-item">A second item</li>
+                <li class="list-group-item">A third item</li>
+                <li class="list-group-item">A fourth item</li>
+                <li class="list-group-item">And a fifth one</li>
+            </ul>
         </div>
-        <div class="row">
-            <div class="col-1 p-0">
-            <h1 class="text-left" style="font-size: 3rem;">&rdsh;</h1>
-            </div>
-            <div class="col-8 border-right text-left">
-                <p class="new-p" style="display: none;"><strong id="conf">{{ session['user_config'] }}</strong></p>
-                <p class="new-p"><strong>{{ (', '.join(session['user_config'])).replace('--', '') }}</strong></p>
-                <div class="col-7 dropdown-divider"></div>
-            </div>
-            <div class="col-3 justify-content-center">
-                <h1 class="display-3">&#10552;</h1>
-            </div>
+        <div class="col">
+
         </div>
-        <div class="row">
-            <div class="col-3 border-left p-1">
-                <p class="lead text-left new-p">
-                    <u>From</u> <em id="s">{{session['source']}}</em>
-                </p>
-            <div class="dropdown-divider"></div>
-            <p class="text-left">
-                L: <small id="s_l">{{session['sourceLogin']}}</small><br>
-                P: <small id="s_p">{{session['sourcePassword']}}</small>
-            </p>
-            </div>
-            <div class="col-2 p-0 d-flex align-items-center justify-content-between">
-                <h1 class="display-4" style="margin-bottom: 0;">&#x021B7;</h1>
-                <h1 class="display-4" style="margin-bottom: 0;">&#x021B6;</h1>
-            </div>
-            <div class="col-3 border-right p-1">
-                <p class="lead new-p text-right"> <u>To</u> <em id="t">{{session['target']}}</em></p>
-                <div class="dropdown-divider"></div>
-                <p class="text-right">
-                    L: <small id="t_l">{{session['targetLogin']}}</small><br>
-                    P: <small id="t_p">{{session['targetPassword']}}</small>
-                </p>
-            </div>
-            <div class="col-4 justify-content-center">
-                <img src="{{ url_for('static', filename='img/' + session['target'].lower() + '.png')}}" class="d-flex align-self-start" width="90px"
-                    height="90px">
-            </div>
-        </div>
-        <div class="row dropdown-divider" style="margin-left: -4rem;"></div>
-        <h4 class="text-muted text-left">Everything right?</h4>
-        <button type="button" href="#" id="submit-button" class="btn btn-md btn-primary" style="margin-top: 2rem;">Yes</button>
     </div>
 
-    <div class="container" style="display: none;" id="progressbar">
-        <div class="mx-auto p-3 text-white text-center">
-            <h3 id="status-text">In progress...</h3>
-            <div id="status-img"><img id="img" src="{{ url_for('static', filename='img/loading1.gif')}}" height="200" width="300"
-                    alt="loading"></div>
-            <hr>
-            <a href="{{ url_for('usage')}}" id="back-button" class="btn btn-lg btn-secondary"
-                style="margin-top: 2rem; display: none;">Back</a>
-        </div>
-
-    </div>
 </main>
 {% endblock %}
 {% block extend_js %}

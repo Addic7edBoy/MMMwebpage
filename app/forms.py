@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, \
+    TextAreaField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 from app.models import User
@@ -59,7 +59,19 @@ class EditProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError('Please use a different username.')
 
+class SourceForm(FlaskForm):
+    select = SelectField('source', choices=[("vk", "vk"), ("sp", "sp"), ("ym", "ym")])
+    login = StringField('Login')
+    password = PasswordField('Password')
+    submit = SubmitField('Submit')
 
+
+class TargetForm(FlaskForm):
+    select = SelectField('source', choices=[
+                         ("sp", "sp"), ("ym", "ym")])
+    login = StringField('Login')
+    password = PasswordField('Password')
+    submit = SubmitField('Submit')
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
 
